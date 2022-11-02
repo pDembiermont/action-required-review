@@ -3,6 +3,7 @@ const core = require( '@actions/core' );
 const yaml = require( 'js-yaml' );
 const reporter = require( './reporter.js' );
 const Requirement = require( './requirement.js' );
+const ParseCodeOwners = require('./codeowners.js');
 
 /**
  * Load the requirements yaml file.
@@ -11,9 +12,30 @@ const Requirement = require( './requirement.js' );
  */
 async function getRequirements() {
 	let reqirementsString = core.getInput( 'requirements' );
+	let enforceOnString = core.getInput( 'enforce_on' )
+	let isYaml = true
+
+	if (! enforceOnString) {
+	 	const enforceOn = []
+	} else {
+		const enforceOn = yaml.load( enforceOnString, {
+			onWarning: w => core.warning( `Yaml: ${ w.message }` ),
+		} );
+
+		if ( ! Array.isArray( enforceOn ) ) {
+			throw new Error( 'enforce_on should be an array' );
+		}
+
+	}
+
 
 	if ( ! reqirementsString ) {
 		const filename = core.getInput( 'requirements-file' );
+ 
+		if (filename.trim() == 'CODEOWNERS') {
+			isYaml = false
+		}
+
 		if ( ! filename ) {
 			throw new reporter.ReportError(
 				'Requirements are not found',
@@ -35,18 +57,27 @@ async function getRequirements() {
 		core.warning( 'Ignoring input `requirements-file` because `requirements` was given' );
 	}
 
+
 	try {
-		const requirements = yaml.load( reqirementsString, {
-			onWarning: w => core.warning( `Yaml: ${ w.message }` ),
-		} );
+		if (isYaml) {
+			const requirements = yaml.load( reqirementsString, {
+				onWarning: w => core.warning( `Yaml: ${ w.message }` ),
+			} );
+		} else {
+			const requirements = ParseCodeOwners(requirementsString, enforceOn);
+		}
+
 		if ( ! Array.isArray( requirements ) ) {
 			throw new Error( 'Requirements file does not contain an array' );
 		}
 
 		return requirements.map( ( r, i ) => new Requirement( { name: `#${ i }`, ...r } ) );
+
 	} catch ( error ) {
+
 		error[ Symbol.toStringTag ] = 'Error'; // Work around weird check in WError.
 		throw new reporter.ReportError( 'Requirements are not valid', error, {} );
+		
 	}
 }
 
