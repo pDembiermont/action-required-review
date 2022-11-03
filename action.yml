@@ -1,8 +1,8 @@
 name: Required Review
 description: Check that a Pull Request has reviews from required teams.
 branding:
-  icon: 'user-check'
-  color: 'green'
+  icon: "user-check"
+  color: "green"
 inputs:
   requirements:
     description: >
