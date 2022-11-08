@@ -73,7 +73,7 @@ async function getRequirements() {
 		}
 
 		if (!Array.isArray(requirements)) {
-			throw new Error('Requirements file does not contain an array');
+			throw new Error(`Requirements file does not contain an array. Input: ${requirements}`);
 		}
 
 		return requirements.map((r, i) => new Requirement({ name: `#${i}`, ...r }));
