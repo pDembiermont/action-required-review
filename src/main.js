@@ -45,6 +45,7 @@ async function getRequirements() {
 			isYaml = false
 		}
 
+
 		try {
 			requirementsString = fs.readFileSync(filename, 'utf8');
 		} catch (error) {
@@ -61,12 +62,12 @@ async function getRequirements() {
 	var requirements = []
 	try {
 		if (isYaml) {
-			core.debug("Parsing Yaml")
+			core.info("Parsing Yaml")
 			requirements = yaml.load(requirementsString, {
 				onWarning: w => core.warning(`Yaml: ${w.message}`),
 			});
 		} else {
-			core.debug("Parsing Codeowners")
+			core.info("Parsing Codeowners")
 			requirements = ParseCodeOwners(requirementsString, enforceOn);
 		}
 
