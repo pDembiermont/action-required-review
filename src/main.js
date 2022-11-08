@@ -61,12 +61,12 @@ async function getRequirements() {
 	var requirements = []
 	try {
 		if (isYaml) {
-			console.log("Parsing Yaml")
+			core.debug("Parsing Yaml")
 			requirements = yaml.load(requirementsString, {
 				onWarning: w => core.warning(`Yaml: ${w.message}`),
 			});
 		} else {
-			console.log("Parsing Codeowners")
+			core.debug("Parsing Codeowners")
 			requirements = ParseCodeOwners(requirementsString, enforceOn);
 		}
 
