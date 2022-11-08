@@ -1,5 +1,3 @@
-var fs = require('fs');
-
 // improve path mapping
 function ParseLine(line, enforceOn) {
     const lineList = line.split(/(\s+)/).filter(
