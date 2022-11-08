@@ -41,7 +41,7 @@ async function getRequirements() {
 			);
 		}
 
-		if (filename.trim() == 'CODEOWNERS') {
+		if (filename.trim() === 'CODEOWNERS') {
 			isYaml = false
 		}
 
