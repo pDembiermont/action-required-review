@@ -17,7 +17,7 @@ async function getRequirements() {
 	var enforceOn
 
 	if (!enforceOnString) {
-		const enforceOn = []
+		enforceOn = []
 	} else {
 		const enforceOn = yaml.load(enforceOnString, {
 			onWarning: w => core.warning(`Yaml: ${w.message}`),
@@ -33,16 +33,16 @@ async function getRequirements() {
 	if (!requirementsString) {
 		const filename = core.getInput('requirements-file');
 
-		if (filename.trim() == 'CODEOWNERS') {
-			isYaml = false
-		}
-
 		if (!filename) {
 			throw new reporter.ReportError(
 				'Requirements are not found',
 				new Error('Either `requirements` or `requirements-file` input is required'),
 				{}
 			);
+		}
+
+		if (filename.trim() == 'CODEOWNERS') {
+			isYaml = false
 		}
 
 		try {
@@ -58,7 +58,7 @@ async function getRequirements() {
 		core.warning('Ignoring input `requirements-file` because `requirements` was given');
 	}
 
-	var requirements
+	var requirements = []
 	try {
 		if (isYaml) {
 			requirements = yaml.load(requirementsString, {
