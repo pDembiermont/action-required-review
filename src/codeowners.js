@@ -17,7 +17,7 @@ function ParseLine(line, enforceOn) {
 
 async function ParseCodeOwners(data, enforceOn) {
     const dataArray = data.split('\n');
-    const result = await Promise.all(dataArray.map(async i => ParseLine(i, enforceOn)));
+    const result = await Promise.all(dataArray.map(async line => ParseLine(line, enforceOn)));
 
     return result.filter(value => !!value);
 }
