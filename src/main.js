@@ -19,7 +19,8 @@ async function getRequirements() {
 	if (!enforceOnString) {
 		enforceOn = []
 	} else {
-		const enforceOn = yaml.load(enforceOnString, {
+
+		enforceOn = yaml.load(enforceOnString, {
 			onWarning: w => core.warning(`Yaml: ${w.message}`),
 		});
 
