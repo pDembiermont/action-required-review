@@ -1,8 +1,8 @@
 name: Required Review
 description: Check that a Pull Request has reviews from required teams.
 branding:
-  icon: 'user-check'
-  color: 'green'
+  icon: "user-check"
+  color: "green"
 inputs:
   requirements:
     description: >
@@ -13,6 +13,11 @@ inputs:
     description: >
       Requirements file.
       Either this or `requirements` is required.
+    required: false
+  enforce_on:
+    description: >
+      When using codeowners
+      Specify which path you want to enforce
     required: false
   status:
     description: Status context for the status check.
